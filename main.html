@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Calculator</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+  <style>
+    body {
+      background-image: url('https://source.unsplash.com/random/200x200?sig=1');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      transition: background-image 1s ease-in-out;
+    }
+
+    header {
+      width: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="card w-50 m-auto text-center">
+    <div class="card-header bg-danger text-white">LOVE CALCULATOR</div>
+    <div class="card-body">
+      <form class="form-inline w-75 m-auto">
+        <div class="form-group">
+          <input type="text" name="" class="form-control text-center" placeholder="Your Name" id="name">
+        </div>
+        <div class="pl-4 pr-4">
+          <span> + </span>
+        </div>
+        <div class="form-group">
+          <input type="text" name="" class="form-control text-center" placeholder=" Love Name" id="lname">
+        </div>
+      </form>
+      <br>
+      <div class="w-70 m-auto">
+        <button class="btn btn-success w-50" onclick="checkLovePercentage()">Calculate Love</button>
+        <button class="btn btn-info w-50" onclick="saveNamesToFile()">Save Names to File</button>
+      </div>
+      <br>
+      <div>
+        <input type="text" name="" placeholder="LOVE PERCENTAGE" class="form-control text-center w-25 m-auto" id="lovevalue" readonly>
+      </div>
+    </div>
+    <div class="card-footer">God Bless Your Relationship</div>
+  </div>
+</header>
+
+<script>
+  // Names are saved in an array for later use
+  var savedNames = [];
+
+  function checkLovePercentage() {
+    var name = document.getElementById('name').value;
+    var lname = document.getElementById('lname').value;
+
+    if (name === "" || lname === "") {
+      alert('Please enter both names before calculating.');
+      return;
+    }
+
+    var lovePercentage = Math.floor(Math.random() * 100);
+    document.getElementById('lovevalue').value = lovePercentage + "%";
+
+    // Save the names
+    savedNames.push({ name, lname });
+
+    // Change the background image every time the love percentage is calculated
+    changeBackgroundImage();
+  }
+
+  function changeBackgroundImage() {
+    // Array of background images
+    var backgroundImages = [
+      'https://source.unsplash.com/random/200x200?sig=1',
+      'https://source.unsplash.com/random/200x200?sig=2',
+      'https://source.unsplash.com/random/200x200?sig=3'
+    ];
+
+    // Get a random index for the background image
+    var randomIndex = Math.floor(Math.random() * backgroundImages.length);
+
+    // Change the background image
+    document.body.style.backgroundImage = 'url(' + backgroundImages[randomIndex] + ')';
+  }
+
+  function saveNamesToFile() {
+    if (savedNames.length === 0) {
+      alert('No names to save.');
+      return;
+    }
+
+    var data = "Saved Names:\n\n";
+    savedNames.forEach(function (names, index) {
+      data += "Entry " + (index + 1) + ":\n";
+      data += "Your Name: " + names.name + "\nLove Name: " + names.lname + "\n\n";
+    });
+
+    var blob = new Blob([data], { type: 'text/plain' });
+    var url = URL.createObjectURL(blob);
+
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'saved_names.txt';
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+</script>
+
+</body>
+</html>
